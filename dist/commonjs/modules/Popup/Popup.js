@@ -65,6 +65,10 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactDom = require('react-dom');
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
 var _lib = require('../../lib');
 
 var _Portal = require('../../addons/Portal');
@@ -127,6 +131,7 @@ var Popup = function (_Component) {
         window.addEventListener('scroll', _this.hideOnScroll);
       }
 
+      if (!!_this.myTrigger) _this.coords = _reactDom2.default.findDOMNode(_this.myTrigger).getBoundingClientRect();
       var onMount = _this.props.onMount;
 
       if (onMount) onMount(e, _this.props);
@@ -297,6 +302,8 @@ var Popup = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _this2 = this;
+
       var _props2 = this.props,
           basic = _props2.basic,
           children = _props2.children,
@@ -315,7 +322,17 @@ var Popup = function (_Component) {
       var style = (0, _assign3.default)({}, this.state.style, this.props.style);
       var classes = (0, _classnames2.default)('ui', position, size, (0, _lib.useKeyOrValueAndKey)(wide, 'wide'), (0, _lib.useKeyOnly)(basic, 'basic'), (0, _lib.useKeyOnly)(flowing, 'flowing'), (0, _lib.useKeyOnly)(inverted, 'inverted'), 'popup transition visible', className);
 
-      if (closed) return trigger;
+      var refTrigger = void 0;
+      if (!!trigger) {
+        refTrigger = _react2.default.cloneElement(_react2.default.createElement(
+          'span',
+          null,
+          trigger
+        ), { ref: function ref(_ref2) {
+            _this2.myTrigger = _ref2;
+          } });
+      }
+      if (closed) return refTrigger;
 
       var unhandled = (0, _lib.getUnhandledProps)(Popup, this.props);
       var portalPropNames = _Portal2.default.handledProps;
@@ -338,7 +355,7 @@ var Popup = function (_Component) {
       return _react2.default.createElement(
         _Portal2.default,
         (0, _extends3.default)({}, mergedPortalProps, {
-          trigger: trigger,
+          trigger: refTrigger,
           onClose: this.handleClose,
           onMount: this.handlePortalMount,
           onOpen: this.handleOpen,
