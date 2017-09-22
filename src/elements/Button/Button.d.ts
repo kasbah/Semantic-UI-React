@@ -22,7 +22,7 @@ export interface ButtonProps {
   animated?: 'fade' | 'vertical';
 
   /** A button can be attached to the top or bottom of other content. */
-  attached?: 'left' | 'right' | 'top' | 'bottom';
+  attached?: boolean | 'left' | 'right' | 'top' | 'bottom';
 
   /** A basic button is less pronounced. */
   basic?: boolean;
